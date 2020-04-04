@@ -401,9 +401,13 @@ $app->get('/play/{city}/{country}', function ($request, $response, $args) {
     $adjustment = $this->gToHAdjustment;
     $times = [];
     if ($city != null && $country != null) {
-	// ISNA is default method. Adjustment of +1 day added for Dhul Hijjah 2018.
+        // ISNA is default method. Adjustment of +1 day added for Dhul Hijjah 2018.
         $t = new \AlAdhanApi\TimesByCity($city, $country, null, null, 2, $adjustment);
-        $times = $t->get()['data'];
+        try {
+          $times = $t->get()['data'];
+        } catch (Exception $e) {
+          $args['locationError'] = true;
+        }
     }
     // $this->logger->info("aladhan.com '/' play");
     $args['title'] = 'Adhan Player and Prayer Times Today | ' . $city . ' '. $country;
@@ -417,6 +421,7 @@ $app->get('/play/{city}/{country}', function ($request, $response, $args) {
 
 });
 
+// Can /play/{city}/{country}/{a}/{b} be removed?
 $app->get('/play/{city}/{country}/{a}/{b}', function ($request, $response, $args) {
     $city = $request->getAttribute('city');
     $country = $request->getAttribute('country');

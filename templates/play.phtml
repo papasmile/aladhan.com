@@ -103,7 +103,16 @@ $times['date']['hijri']['day'] . ' ' . $times['date']['hijri']['month']['en'] . 
 
 <div class="row">
     <div class="col-md-12">
-        <div id="location-group" class="form-group">
+        <?php
+          $locationGroupErrorClasses = 'form-group';
+          $locationErrorClasses = 'form-control-error';
+          if (!isset($locationError)) {
+            $locationErrorClasses = $locationErrorClasses . ' hide-error';
+          } else {
+            $locationGroupErrorClasses = $locationGroupErrorClasses . ' has-error';
+          }
+        ?>
+        <div id="location-group" class="<?=$locationGroupErrorClasses;?>">
             <label for="location">Location</label>
             <?php
               $locationValue = '';
@@ -112,7 +121,7 @@ $times['date']['hijri']['day'] . ' ' . $times['date']['hijri']['month']['en'] . 
               }
             ?>
                 <input class="form-control" name="location" id="location" value="<?=$locationValue;?>" placeholder="Example: London, UK">
-                <span class="form-control-error hide-error" id="location-error">Location could not be found.  Please update location</span>
+                <span class="<?=$locationErrorClasses;?>" id="location-error">Location could not be found.  Please update location</span>
             </div>
     </div>
 </div>
